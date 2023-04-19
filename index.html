@@ -10,22 +10,34 @@
 </head>
 
 <body>
+  <section class="hero is-primary">
+    <div class="hero-body">
+      <p class="title">
+        SIMULCATOR
+      </p>
+      <p class="subtitle">
+        Sim Racing FOV Calulator
+      </p>
+    </div>
+  </section>
   <section class="section">
     <div class="container">
 
-      <h1 class="title">SIMULCATOR</h1>
-      <h2 class="subtitle">Sim Racing FOV Calulator</h2>
-
-      <div x-data="data" x-on:change.debounce="calculate($data)" x-init="calculate($data)">
+      <div x-data="data" x-on:change.debounce="calculate($data)" x-on:keyup.debounce="calculate($data)" x-on:click.debounce="calculate($data)" x-init="calculate($data)">
         <div class="columns">
+          <div class="box has-background-primary-light" > 
           <div x-data="screen" class="column " >
-            <p class="subtitle">Screen</p>
+            <p class="title is-3">Input</p>
 
-            <div class="control">
-              <label class="label">Screen diagonal</label>
-              <input class="input" type="number" x-model="diagonal" min="1" max="100" />
+            <div class="field">
+              <div class="control">
+                <label class="label">Screen diagonal</label>
+                <input class="input" type="number" x-model="diagonal" min="1" max="100" />
+                <p class="help ">Unit is inches</p>
+              </div>
             </div>
 
+            <div class="field">
             <div class="control">
               <label class="label" for="ratio">Ratio</label>
               <select class="input" name="ratio" x-model="ratio" id="ratio">
@@ -40,25 +52,36 @@
                 <option value=[4,1]>4:1</option>
               </select>
             </div>
+          </div>
 
+          <div class="field">
             <div class="control">
               <label class="label">Bezel</label>
               <input class="input" type="number" x-model="bezel" min="0" max="50" />
+              <p class="help ">Width of the bezel (one side)</p>
             </div>
+          </div>
 
+          <div class="field">
             <div class="control">
-              <label class="label" for="screenCurved">is Curved</label>
+              <label class="label" for="screenCurved">Monitor type</label>
               <select class="input" name="isCurved" x-model="isCurved" id="isCurved">
                 <option value="flat" selected>Flat</option>
                 <option value="curved">Curved</option>
               </select>
+              <p class="help ">Wether you monitor is flat or curved</p>
             </div>
+          </div>
 
+          <div class="field" x-show="isCurved=='curved'" x-transition>
             <div class="control">
               <label class="label" for="Curvature">Curvature Radius</label>
               <input class="input" type="number" x-model="curvatureRadius" id="Curvature" min="1" max="2500" />
+              <p class="help ">Radius of curvature in mm, usually 1800, 1500 or 1000</p>
             </div>
+          </div>
 
+          <div class="field">
             <div class="control">
               <label class="label" for="screens">Screens</label>
               <select class="input" name="screens" x-model="screens" id="screens">
@@ -66,19 +89,28 @@
                 <option value="3">Triple</option>
               </select>
             </div>
+          </div>
 
+          <div class="field" x-show="screens=='3'">
             <div class="control">
               <label class="label" for="angle">Angle</label>
               <input class="input" type="number" x-model="angle" id="angle" min="0" max="180" />
-            </div>
-
-            <div class="control">
-              <label class="label">Viewing distance</label>
-              <input class="input" type="number" x-model="distance" min="1" max="2000" />
+              <p class="help ">Angle in degrees of the triple screen setup</p>
             </div>
           </div>
 
-          <div x-data="result" class="column">
+          <div class="field">
+            <div class="control">
+              <label class="label">Viewing distance</label>
+              <input class="input" type="number" x-model="distance" min="1" max="2000" />
+              <p class="help ">Distance from your eyes to the primary screen</p>
+            </div>
+          </div>
+          </div>
+        </div>
+    <div class="box">
+          <div x-data="display" class="column">
+        
             <p class="title is-3">Result</p>
 
             <p class="title is-4">Dimensions</p>
@@ -87,69 +119,68 @@
               <tbody>
                 <tr>
                   <td>Screen height</td>
-                  <td><span x-text="height"></span> </td>
+                  <td align="right"><span x-text="height" ></span> </td>
                 </tr>
 
                 <tr>
                   <td>Screen width</td>
-                  <td><span x-text="width"></span> </td>
+                  <td align="right"><span x-text="width"></span> </td>
                 </tr>
 
-                <tr>
+                <tr >
                   <td>Total width of triple screen setup at <span x-text="optimalAngle"></span>°</td>
-                  <td><span x-text="idealTotalWidth"></span> </td>
+                  <td align="right"><span x-text="idealTotalWidth"></span> </td>
                 </tr>
                 <tr>
                   <td>Total width of triple screen setup at <span x-text="screen.angle"></span>°</td>
-                  <td><span x-text="totalWidth"></span> </td>
+                  <td align="right"><span x-text="totalWidth"></span> </td>
                 </tr>
 
                 <tr>
                   <td>Straight screen width</td>
-                  <td><span x-text="straightWidth"></span> </td>
+                  <td align="right"><span x-text="straightWidth"></span> </td>
                 </tr>
               </tbody>
             </table>
 
-            <p class="title is-4">FOV at given Distance (<span x-text="screen.distance"></span>)</p>
+            <p class="title is-4">FOV</p>
             <table class="table is-striped is-fullwidth">
               <tbody>             
                 <tr>
                   <td>hFOV flat</td>
-                  <td><span x-text="hFOV"></span> </td>
+                  <td align="right"><span x-text="hFOV"></span> </td>
                 </tr>
 
                 <tr>
                   <td>hFOV curved</td>
-                  <td><span x-text="hFOVcurved"></span> </td>
+                  <td align="right"><span x-text="hFOVcurved"></span> </td>
                 </tr>
 
                 <tr>
                   <td>vFOV</td>
-                  <td><span x-text="vFOV"></span> </td>
+                  <td align="right"><span x-text="vFOV"></span> </td>
                 </tr>
               </tbody>
             </table>
 
-            <p class="title is-4">Ideal Distance</p>
+            <p class="title is-4">Ideal Distance and Angle</p>
 
             <table class="table is-striped is-fullwidth">
               <tbody>             
                 <tr>
                   <td>ideal Distance at <span x-text="screen.angle"></span>°</td>
-                  <td><span x-text="idealDistance"></span> </td>
+                  <td align="right"><span x-text="idealDistance"></span> </td>
                 </tr>
 
                 <tr>
                   <td>optimal Angle at <span x-text="screen.distance"></span>cm</td>
-                  <td><span x-text="optimalAngle"></span> </td>
+                  <td align="right"><span x-text="optimalAngle"></span> </td>
                 </tr>
               </tbody>
             </table>
 
-            <p class="title is-4">ideal Angle</p>
-
           </div>
+        </div>
 
         </div>
       </div>

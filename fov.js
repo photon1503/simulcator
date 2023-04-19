@@ -29,24 +29,54 @@ result = {
     idealDistance: 0
 };
 
+display = { width: 0,
+    straightWidth: 0,
+    height: 0,
+    totalWidth: 0,
+    idealTotalWidth: 0,
+    straightWidth: 0,
+    hFOV: 0,
+    hFOVcurved: 0,
+    vFOV: 0,
+    optimalAngle: 0,
+    idealDistance: 0 }
 
-data = { screen, result };  //necessary to get the scope of the AlpineJS object
-
+data = { screen, display};  //necessary to get the scope of the AlpineJS object
 
 function calculate(data) {
+    console.log(screen);
+
+    //screen.isCurved = screen.isCurved === "true";
+
     ratioFactor();
-    data.result.height =  screenHeight(screen.diagonal);
-    data.result.width = screenWidth();
-    data.result.straightWidth = screenStraightWidth();
-    data.result.idealTotalWidth = TotalWidth(ScreenAngle());
-    data.result.totalWidth = TotalWidth(degrees_to_radians(screen.angle));
-    data.result.hFOV = hFOV();
-    data.result.vFOV = vFOV();
-    data.result.optimalAngle = ScreenAngleDeg();
-    data.result.hFOVcurved = hFOVcurved();
-    data.result.idealDistance = idealDistance(screen.angle);
+    result.height =  screenHeight(screen.diagonal);
+    result.width = screenWidth();
+    result.straightWidth = screenStraightWidth();
+    result.idealTotalWidth = TotalWidth(ScreenAngle());
+    result.totalWidth = TotalWidth(degrees_to_radians(screen.angle));
+    result.hFOV = hFOV();
+    result.vFOV = vFOV();
+    
+    result.optimalAngle = ScreenAngleDeg();
+    result.hFOVcurved = hFOVcurved();
+    result.idealDistance = idealDistance(screen.angle);
+
+    data.display.height = result.height.toFixed(2);
+    data.display.width = result.width.toFixed(2);
+    data.display.straightWidth = result.straightWidth.toFixed(2);
+    data.display.idealTotalWidth = result.idealTotalWidth.toFixed(2);
+    data.display.totalWidth = result.totalWidth.toFixed(2);
+    data.display.hFOV = result.hFOV.toFixed(2);
+    data.display.vFOV = result.vFOV.toFixed(2);
+    data.display.optimalAngle = result.optimalAngle.toFixed(2);
+    data.display.hFOVcurved = result.hFOVcurved.toFixed(2);
+    data.display.idealDistance = result.idealDistance.toFixed(2);
+
 }
 
+/*
+ * calculate factor from aspect ratio
+ */
 function ratioFactor() {
     screen.screenRatio = JSON.parse(screen.ratio);
     return screen.screenRatio[0] / screen.screenRatio[1];
