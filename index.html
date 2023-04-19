@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SIMULCATOR</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+
+<body>
+  <section class="section">
+    <div class="container">
+
+      <h1 class="title">SIMULCATOR</h1>
+      <h2 class="subtitle">Sim Racing FOV Calulator</h2>
+
+      <div x-data="data" x-on:change.debounce="calculate($data)" x-init="calculate($data)">
+        <div class="columns">
+          <div x-data="screen" class="column " >
+            <p class="subtitle">Screen</p>
+
+            <div class="control">
+              <label class="label">Screen diagonal</label>
+              <input class="input" type="number" x-model="diagonal" min="1" max="100" />
+            </div>
+
+            <div class="control">
+              <label class="label" for="ratio">Ratio</label>
+              <select class="input" name="ratio" x-model="ratio" id="ratio">
+                <option value=[16,9] selected>16:9 1920×1080</option>
+                <option value=[4,3]>4:3 1024×768, 1600×1200</option>
+                <option value=[5,4]>5:4 1280×1024</option>
+                <option value=[3,2]>3:2 2160×1440</option>
+                <option value=[16,10]>16:10 1920×1200</option>
+                <option value=[21,9]>21:9 2560×1080, 3440×1440</option>
+                <option value=[32,9]>32:9 3840×1080, 5120×1440</option>
+                <option value=[1,1]>1:1 1920×1920</option>
+                <option value=[4,1]>4:1</option>
+              </select>
+            </div>
+
+            <div class="control">
+              <label class="label">Bezel</label>
+              <input class="input" type="number" x-model="bezel" min="0" max="50" />
+            </div>
+
+            <div class="control">
+              <label class="label" for="screenCurved">is Curved</label>
+              <select class="input" name="isCurved" x-model="isCurved" id="isCurved">
+                <option value="flat" selected>Flat</option>
+                <option value="curved">Curved</option>
+              </select>
+            </div>
+
+            <div class="control">
+              <label class="label" for="Curvature">Curvature Radius</label>
+              <input class="input" type="number" x-model="curvatureRadius" id="Curvature" min="1" max="2500" />
+            </div>
+
+            <div class="control">
+              <label class="label" for="screens">Screens</label>
+              <select class="input" name="screens" x-model="screens" id="screens">
+                <option value="1" selected>Single</option>
+                <option value="3">Triple</option>
+              </select>
+            </div>
+
+            <div class="control">
+              <label class="label" for="angle">Angle</label>
+              <input class="input" type="number" x-model="angle" id="angle" min="0" max="180" />
+            </div>
+
+            <div class="control">
+              <label class="label">Viewing distance</label>
+              <input class="input" type="number" x-model="distance" min="1" max="2000" />
+            </div>
+          </div>
+
+          <div x-data="result" class="column">
+            <p class="title is-3">Result</p>
+
+            <p class="title is-4">Dimensions</p>
+
+            <table class="table is-striped is-fullwidth">                
+              <tbody>
+                <tr>
+                  <td>Screen height</td>
+                  <td><span x-text="height"></span> </td>
+                </tr>
+
+                <tr>
+                  <td>Screen width</td>
+                  <td><span x-text="width"></span> </td>
+                </tr>
+
+                <tr>
+                  <td>Total width of triple screen setup at <span x-text="optimalAngle"></span>°</td>
+                  <td><span x-text="idealTotalWidth"></span> </td>
+                </tr>
+                <tr>
+                  <td>Total width of triple screen setup at <span x-text="screen.angle"></span>°</td>
+                  <td><span x-text="totalWidth"></span> </td>
+                </tr>
+
+                <tr>
+                  <td>Straight screen width</td>
+                  <td><span x-text="straightWidth"></span> </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <p class="title is-4">FOV at given Distance (<span x-text="screen.distance"></span>)</p>
+            <table class="table is-striped is-fullwidth">
+              <tbody>             
+                <tr>
+                  <td>hFOV flat</td>
+                  <td><span x-text="hFOV"></span> </td>
+                </tr>
+
+                <tr>
+                  <td>hFOV curved</td>
+                  <td><span x-text="hFOVcurved"></span> </td>
+                </tr>
+
+                <tr>
+                  <td>vFOV</td>
+                  <td><span x-text="vFOV"></span> </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <p class="title is-4">Ideal Distance</p>
+
+            <table class="table is-striped is-fullwidth">
+              <tbody>             
+                <tr>
+                  <td>ideal Distance at <span x-text="screen.angle"></span>°</td>
+                  <td><span x-text="idealDistance"></span> </td>
+                </tr>
+
+                <tr>
+                  <td>optimal Angle at <span x-text="screen.distance"></span>cm</td>
+                  <td><span x-text="optimalAngle"></span> </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <p class="title is-4">ideal Angle</p>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <section class="section">
+      <div class="container">
+        <footer class="footer">
+          <div class="content has-text-centered">
+            <p>
+              <strong>SIMCULATOR</strong> by photon</a>.
+            </p>
+          </div>
+        </footer>
+      </div>
+    </section>
+</body>
+<script src="fov.js"></script>
+
+</html>
