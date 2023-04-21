@@ -12,6 +12,7 @@
   <title>SIMULCATOR</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script src="https://unpkg.com/konva@9/konva.min.js"></script>
 </head>
 
 <body>
@@ -46,8 +47,6 @@
                   <button class="button is-static">inches</button>
                 </p>
               </div>
-
-
 
               <div class="field">
                 <div class="control">
@@ -168,6 +167,7 @@
             </div> <!-- box -->
           </div>
 
+          <div class="column" id="canvas"></div>
           <div x-data="display" class="column">
             <div class="box">
 
@@ -270,6 +270,7 @@
       </div>
     </section>
 </body>
-<script src="fov.js"></script>
+<script type="text/javascript" src="fov.js"></script>
+<script type="text/javascript" src="graphics.js"></script>
 
 </html>

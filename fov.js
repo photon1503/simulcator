@@ -76,6 +76,8 @@ function calculate(data) {
     data.display.hFOVcurved = result.hFOVcurved.toFixed(2);
     data.display.idealDistance = result.idealDistance.toFixed(2);
 
+    updateGraphics();
+
 }
 
 /*
