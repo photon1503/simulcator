@@ -20,11 +20,11 @@ to discuss what you would like to change.
 
 ## Credits
 
-- In depth article about FOV by GTSpeedster https://forum.reizastudios.com/threads/tutorial-fov-triple-screens-immersion.4009/
-- Google sheets by TheInfernalVortex https://www.reddit.com/r/simracing/comments/r2wqmn/triple_screen_calculatorguide/
-- Article and calculator for curved monitors by Weldgineer https://www.reddit.com/r/simracing/comments/jss4yh/lets_talk_about_fov_on_curved_monitors/
-- FOV Calculator by dinex86 https://dinex86.github.io/FOV-Calculator/
-- Triple screen width calculator https://www.desmos.com/calculator/8ud3eka8kc
+- [In depth article](https://forum.reizastudios.com/threads/tutorial-fov-triple-screens-immersion.4009/) about FOV by GTSpeedster 
+- [Google sheets](https://www.reddit.com/r/simracing/comments/r2wqmn/triple_screen_calculatorguide/) by TheInfernalVortex 
+- [Article and calculator](https://www.reddit.com/r/simracing/comments/jss4yh/lets_talk_about_fov_on_curved_monitors/) for curved monitors by Weldgineer 
+- [FOV Calculator](https://dinex86.github.io/FOV-Calculator/) by dinex86 
+- Triple screen width calculator on [desmos](https://www.desmos.com/calculator/8ud3eka8kc)
 
 
 ## License
