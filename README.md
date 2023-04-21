@@ -30,7 +30,3 @@ to discuss what you would like to change.
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
-
-
-<p align="left"> <img src="https://komarev.com/ghpvc/?username=photon1503&label=Profile%20views&color=0e75b6&style=flat" alt="photon1503" /> </p>
-
