@@ -17,6 +17,7 @@ screen = {
 
 result = {
     width: 0,
+    widthInclBezels : 0,
     straightWidth: 0,
     height: 0,
     totalWidth: 0,
@@ -31,6 +32,7 @@ result = {
 
 display = { width: 0,
     straightWidth: 0,
+    widthInclBezels : 0,
     height: 0,
     totalWidth: 0,
     idealTotalWidth: 0,
@@ -51,6 +53,7 @@ function calculate(data) {
     ratioFactor();
     result.height =  screenHeight(screen.diagonal);
     result.width = screenWidth();
+    result.widthInclBezels = result.width + 2 * (screen.bezel/10);
     result.straightWidth = screenStraightWidth();
     result.idealTotalWidth = TotalWidth(ScreenAngle());
     result.totalWidth = TotalWidth(degrees_to_radians(screen.angle));
@@ -63,6 +66,7 @@ function calculate(data) {
 
     data.display.height = result.height.toFixed(2);
     data.display.width = result.width.toFixed(2);
+    data.display.widthInclBezels = result.widthInclBezels.toFixed(2);
     data.display.straightWidth = result.straightWidth.toFixed(2);
     data.display.idealTotalWidth = result.idealTotalWidth.toFixed(2);
     data.display.totalWidth = result.totalWidth.toFixed(2);
@@ -130,7 +134,7 @@ function vFOV() {
  * calculate horizontal Field of View
  */
 function hFOV() {    
-    var hFOV = screen.screens *  2 * Math.atan(result.width / (2 * screen.distance))
+    var hFOV = screen.screens *  2 * Math.atan(result.widthInclBezels / (2 * screen.distance))
     return radians_to_degrees(hFOV);
 }
 
@@ -149,7 +153,7 @@ function hFOVcurved() {
  * ideal screen angle at given distance
  */
 function ScreenAngle() {
-    var a = 2 * Math.atan(result.width / (2 * screen.distance));
+    var a = 2 * Math.atan(result.widthInclBezels / (2 * screen.distance));
     return a;
 }
 

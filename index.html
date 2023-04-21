@@ -7,6 +7,7 @@
   <title>SIMULCATOR</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script src="https://kit.fontawesome.com/efd9106a8c.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -23,164 +24,218 @@
   <section class="section">
     <div class="container">
 
-      <div x-data="data" x-on:change.debounce="calculate($data)" x-on:keyup.debounce="calculate($data)" x-on:click.debounce="calculate($data)" x-init="calculate($data)">
+      <div x-data="data" x-on:change.debounce="calculate($data)" x-on:keyup.debounce="calculate($data)"
+        x-on:click.debounce="calculate($data)" x-init="calculate($data)">
         <div class="columns">
-          <div class="box has-background-primary-light" > 
-          <div x-data="screen" class="column " >
-            <p class="title is-3">Input</p>
 
-            <div class="field">
-              <div class="control">
-                <label class="label">Screen diagonal</label>
-                <input class="input" type="number" x-model="diagonal" min="1" max="100" />
-                <p class="help ">Unit is inches</p>
+          <div x-data="screen" class="column">
+            <div class="box has-background-primary-light">
+              <p class="title is-3">Input</p>
+
+              <label class="label">Screen diagonal</label>
+              <div class="field has-addons">
+                <div class="control is-expanded">
+                  <input class="input " type="number" x-model="diagonal" min="1" max="100" />
+                </div>
+
+                <p class="control">
+                  <button class="button is-static">inches</button>
+                </p>
               </div>
-            </div>
 
-            <div class="field">
-            <div class="control">
-              <label class="label" for="ratio">Ratio</label>
-              <select class="input" name="ratio" x-model="ratio" id="ratio">
-                <option value=[16,9] selected>16:9 1920×1080</option>
-                <option value=[4,3]>4:3 1024×768, 1600×1200</option>
-                <option value=[5,4]>5:4 1280×1024</option>
-                <option value=[3,2]>3:2 2160×1440</option>
-                <option value=[16,10]>16:10 1920×1200</option>
-                <option value=[21,9]>21:9 2560×1080, 3440×1440</option>
-                <option value=[32,9]>32:9 3840×1080, 5120×1440</option>
-                <option value=[1,1]>1:1 1920×1920</option>
-                <option value=[4,1]>4:1</option>
-              </select>
-            </div>
-          </div>
 
-          <div class="field">
-            <div class="control">
-              <label class="label">Bezel</label>
-              <input class="input" type="number" x-model="bezel" min="0" max="50" />
-              <p class="help ">Width of the bezel (one side)</p>
-            </div>
-          </div>
 
-          <div class="field">
-            <div class="control">
+              <div class="field">
+                <div class="control">
+                  <label class="label" for="ratio">Ratio</label>
+                  <select class="input" name="ratio" x-model="ratio" id="ratio">
+                    <option value=[16,9] selected>16:9 1920×1080</option>
+                    <option value=[4,3]>4:3 1024×768, 1600×1200</option>
+                    <option value=[5,4]>5:4 1280×1024</option>
+                    <option value=[3,2]>3:2 2160×1440</option>
+                    <option value=[16,10]>16:10 1920×1200</option>
+                    <option value=[21,9]>21:9 2560×1080, 3440×1440</option>
+                    <option value=[32,9]>32:9 3840×1080, 5120×1440</option>
+                    <option value=[1,1]>1:1 1920×1920</option>
+                    <option value=[4,1]>4:1</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="label">Bezel</label>
+                <div class="field-body">
+                  <div class="field is-expanded">
+                    <div class="field has-addons">
+                      <div class="control is-expanded">
+                        <input class="input" type="number" x-model="bezel" min="0" max="50" />
+                      </div>
+                      <p class="control">
+                        <button class="button is-static">mm</button>
+                      </p>
+
+                    </div>
+                    <p class="help ">Width of the bezel (one side)</p>
+                  </div>
+                </div>
+              </div>
+
               <label class="label" for="screenCurved">Monitor type</label>
-              <select class="input" name="isCurved" x-model="isCurved" id="isCurved">
-                <option value="flat" selected>Flat</option>
-                <option value="curved">Curved</option>
-              </select>
-              <p class="help ">Wether you monitor is flat or curved</p>
-            </div>
+              <div class="field">
+                <div class="control">
+
+                  <select class="input" name="isCurved" x-model="isCurved" id="isCurved">
+                    <option value="flat" selected>Flat</option>
+                    <option value="curved">Curved</option>
+                  </select>
+
+                </div>
+                <p class="help ">Wether you monitor is flat or curved</p>
+              </div>
+
+              <div class="field" x-show="isCurved=='curved'" x-transition>
+                <label class="label" for="Curvature">Curvature Radius</label>
+                <div class="field-body">
+                  <div class="field is-expanded">
+                    <div class="field has-addons">
+                      <div class="control is-expanded">
+
+
+                        <input class="input" type="number" x-model="curvatureRadius" id="Curvature" min="1"
+                          max="2500" />
+                      </div>
+                      <p class="control">
+                        <button class="button is-static">mm</button>
+                      </p>
+
+                    </div>
+                    <p class="help ">Radius of curvature in mm, usually 1800, 1500 or 1000</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="field">
+                <div class="control">
+                  <label class="label" for="screens">Screens</label>
+                  <select class="input" name="screens" x-model="screens" id="screens">
+                    <option value="1" selected>Single</option>
+                    <option value="3">Triple</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="field" x-show="screens=='3'" transition>
+                <label class="label" for="angle">Angle</label>
+                <div class="field-body">
+                  <div class="field is-expanded" >
+                    <div class="field has-addons">
+                      <div class="control is-expanded">
+
+                        <input class="input" type="number" x-model="angle" id="angle" min="0" max="180" />
+                      </div>
+                      <p class="control">
+                        <button class="button is-static">°</button>
+                      </p>
+                      
+                    </div>
+                    <p class="help ">Angle in degrees of the triple screen setup</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="field">
+                <div class="control">
+                  <label class="label">Viewing distance</label>
+                  <input class="input" type="number" x-model="distance" min="1" max="2000" />
+                  <p class="help ">Distance from your eyes to the primary screen</p>
+                </div>
+              </div>
+
+            </div> <!-- box -->
           </div>
 
-          <div class="field" x-show="isCurved=='curved'" x-transition>
-            <div class="control">
-              <label class="label" for="Curvature">Curvature Radius</label>
-              <input class="input" type="number" x-model="curvatureRadius" id="Curvature" min="1" max="2500" />
-              <p class="help ">Radius of curvature in mm, usually 1800, 1500 or 1000</p>
-            </div>
-          </div>
-
-          <div class="field">
-            <div class="control">
-              <label class="label" for="screens">Screens</label>
-              <select class="input" name="screens" x-model="screens" id="screens">
-                <option value="1" selected>Single</option>
-                <option value="3">Triple</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="field" x-show="screens=='3'">
-            <div class="control">
-              <label class="label" for="angle">Angle</label>
-              <input class="input" type="number" x-model="angle" id="angle" min="0" max="180" />
-              <p class="help ">Angle in degrees of the triple screen setup</p>
-            </div>
-          </div>
-
-          <div class="field">
-            <div class="control">
-              <label class="label">Viewing distance</label>
-              <input class="input" type="number" x-model="distance" min="1" max="2000" />
-              <p class="help ">Distance from your eyes to the primary screen</p>
-            </div>
-          </div>
-          </div>
-        </div>
-    <div class="box">
           <div x-data="display" class="column">
-        
-            <p class="title is-3">Result</p>
+            <div class="box">
 
-            <p class="title is-4">Dimensions</p>
+              <p class="title is-3">Result</p>
 
-            <table class="table is-striped is-fullwidth">                
-              <tbody>
-                <tr>
-                  <td>Screen height</td>
-                  <td align="right"><span x-text="height" ></span> </td>
-                </tr>
+              <p class="title is-4">Dimensions</p>
 
-                <tr>
-                  <td>Screen width</td>
-                  <td align="right"><span x-text="width"></span> </td>
-                </tr>
+              <table class="table is-fullwidth">
+                <tbody>
+                  <tr>
+                    <td>Visible screen height</td>
+                    <td align="right"><span x-text="height"></span> cm</td>
+                  </tr>
 
-                <tr >
-                  <td>Total width of triple screen setup at <span x-text="optimalAngle"></span>°</td>
-                  <td align="right"><span x-text="idealTotalWidth"></span> </td>
-                </tr>
-                <tr>
-                  <td>Total width of triple screen setup at <span x-text="screen.angle"></span>°</td>
-                  <td align="right"><span x-text="totalWidth"></span> </td>
-                </tr>
+                  <tr>
+                    <td>Visible screen width</td>
+                    <td align="right"><span x-text="width"></span> cm</td>
+                  </tr>
 
-                <tr>
-                  <td>Straight screen width</td>
-                  <td align="right"><span x-text="straightWidth"></span> </td>
-                </tr>
-              </tbody>
-            </table>
+                  <tr>
+                    <td>Monitor width incl. Bezels</td>
+                    <td align="right"><span x-text="widthInclBezels"></span> cm</td>
+                  </tr>
 
-            <p class="title is-4">FOV</p>
-            <table class="table is-striped is-fullwidth">
-              <tbody>             
-                <tr>
-                  <td>hFOV flat</td>
-                  <td align="right"><span x-text="hFOV"></span> </td>
-                </tr>
+                  <tr x-show="screen.isCurved=='curved'" x-transition>
+                    <td>Straight screen width</td>
+                    <td align="right"><span x-text="straightWidth"></span> cm</td>
+                  </tr>
 
-                <tr>
-                  <td>hFOV curved</td>
-                  <td align="right"><span x-text="hFOVcurved"></span> </td>
-                </tr>
 
-                <tr>
-                  <td>vFOV</td>
-                  <td align="right"><span x-text="vFOV"></span> </td>
-                </tr>
-              </tbody>
-            </table>
+                  <tr x-show="screen.screens=='3'" transition>
+                    <td>Total width of triple screen setup at <span x-text="screen.angle"></span>°</td>
+                    <td align="right"><span x-text="totalWidth"></span> cm</td>
+                  </tr>
 
-            <p class="title is-4">Ideal Distance and Angle</p>
+                </tbody>
+              </table>
 
-            <table class="table is-striped is-fullwidth">
-              <tbody>             
-                <tr>
-                  <td>ideal Distance at <span x-text="screen.angle"></span>°</td>
-                  <td align="right"><span x-text="idealDistance"></span> </td>
-                </tr>
+              <p class="title is-4">FOV</p>
+              <table class="table is-fullwidth">
+                <tbody>
+                  <tr>
+                    <td>hFOV</td>
+                    <td align="right"><span x-text="hFOV"></span>° </td>
+                  </tr>
 
-                <tr>
-                  <td>optimal Angle at <span x-text="screen.distance"></span>cm</td>
-                  <td align="right"><span x-text="optimalAngle"></span> </td>
-                </tr>
-              </tbody>
-            </table>
+                  <tr x-show="screen.isCurved=='curved'" x-transition>
+                    <td>hFOV curved</td>
+                    <td align="right"><span x-text="hFOVcurved"></span>° </td>
+                  </tr>
 
+                  <tr>
+                    <td>vFOV</td>
+                    <td align="right"><span x-text="vFOV"></span>° </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <p class="title is-4">Ideal Distance and Angle</p>
+
+              <table class="table is-fullwidth">
+                <tbody>
+                  <tr>
+                    <td>ideal Distance at <span x-text="screen.angle"></span>°
+                      <button class="button is-small is-primary is-light" @click="screen.distance=idealDistance">Use
+                        this!</button>
+                    </td>
+                    <td align="right"><span x-text="idealDistance"></span> cm</td>
+                  </tr>
+
+                  <tr x-show="screen.screens=='3'" transition>
+                    <td>optimal Angle at <span x-text="screen.distance"></span>cm
+                      <button class="button is-small is-primary is-light" @click="screen.angle=optimalAngle">Use
+                        this!</button>
+                    </td>
+                    <td align="right"><span x-text="optimalAngle"></span>° </td>
+                  </tr>
+                </tbody>
+              </table>
+
+            </div>
           </div>
-        </div>
 
         </div>
       </div>
@@ -191,7 +246,8 @@
         <footer class="footer">
           <div class="content has-text-centered">
             <p>
-              <strong>SIMCULATOR</strong> by photon</a>.
+              <strong>SIMCULATOR</strong> by photon</a>. <br>
+              <a href=https://github.com/photon1503/simulcator">GitHub project</a>
             </p>
           </div>
         </footer>
