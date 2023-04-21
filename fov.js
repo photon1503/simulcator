@@ -27,7 +27,8 @@ result = {
     hFOVcurved: 0,
     vFOV: 0,
     optimalAngle: 0,
-    idealDistance: 0
+    idealDistance: 0,
+    depth: 0,
 };
 
 display = { width: 0,
@@ -41,7 +42,8 @@ display = { width: 0,
     hFOVcurved: 0,
     vFOV: 0,
     optimalAngle: 0,
-    idealDistance: 0 }
+    idealDistance: 0,
+    depth: 0 }
 
 data = { screen, display};  //necessary to get the scope of the AlpineJS object
 
@@ -59,6 +61,7 @@ function calculate(data) {
     result.totalWidth = TotalWidth(degrees_to_radians(screen.angle));
     result.hFOV = hFOV();
     result.vFOV = vFOV();
+    result.depth = totalDepth();
     
     result.optimalAngle = ScreenAngleDeg();
     result.hFOVcurved = hFOVcurved();
@@ -75,6 +78,7 @@ function calculate(data) {
     data.display.optimalAngle = result.optimalAngle.toFixed(2);
     data.display.hFOVcurved = result.hFOVcurved.toFixed(2);
     data.display.idealDistance = result.idealDistance.toFixed(2);
+    data.display.depth = result.depth.toFixed(2);
 
 }
 
@@ -108,7 +112,7 @@ function screenWidth() {
  */
 function screenStraightWidth() {
     var radius_cm = screen.curvatureRadius / 10;
-    var straightWidth = 2 * radius_cm * Math.sin(result.width / (2 * radius_cm));
+    var straightWidth = 2 * radius_cm * Math.sin(result.width / (2 * radius_cm)) + 2 * (screen.bezel/10);
     return straightWidth;
 }
 
@@ -137,6 +141,12 @@ function hFOV() {
     var hFOV = screen.screens *  2 * Math.atan(result.widthInclBezels / (2 * screen.distance))
     return radians_to_degrees(hFOV);
 }
+
+function totalDepth() {
+    return result.widthInclBezels * Math.sin(degrees_to_radians(screen.angle));
+}
+
+
 
 /* 
  * calculate horziontal Field of View for curved monitor
