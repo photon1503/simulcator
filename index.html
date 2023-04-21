@@ -127,7 +127,7 @@
               <div class="field" x-show="screens=='3'" transition>
                 <label class="label" for="angle">Angle</label>
                 <div class="field-body">
-                  <div class="field is-expanded" >
+                  <div class="field is-expanded">
                     <div class="field has-addons">
                       <div class="control is-expanded">
 
@@ -136,18 +136,28 @@
                       <p class="control">
                         <button class="button is-static">°</button>
                       </p>
-                      
+
                     </div>
                     <p class="help ">Angle in degrees of the triple screen setup</p>
                   </div>
                 </div>
               </div>
 
+
               <div class="field">
-                <div class="control">
-                  <label class="label">Viewing distance</label>
-                  <input class="input" type="number" x-model="distance" min="1" max="2000" />
-                  <p class="help ">Distance from your eyes to the primary screen</p>
+                <label class="label">Viewing distance</label>
+                <div class="field-body">
+                  <div class="field is-expanded">
+                    <div class="field has-addons">
+                      <div class="control is-expanded">
+                        <input class="input" type="number" x-model="distance" min="1" max="2000" />
+                      </div>
+                      <p class="control">
+                        <button class="button is-static">cm</button>
+                      </p>
+                    </div>
+                    <p class="help ">Distance from your eyes to the primary screen</p>
+                  </div>
                 </div>
               </div>
 
@@ -212,27 +222,29 @@
                 </tbody>
               </table>
 
-              <p class="title is-4">Ideal Distance and Angle</p>
+              <div x-show="screen.screens=='3'" transition>
+                <p class="title is-4">Ideal Distance and Angle</p>
 
-              <table class="table is-fullwidth">
-                <tbody>
-                  <tr>
-                    <td>ideal Distance at <span x-text="screen.angle"></span>°
-                      <button class="button is-small is-primary is-light" @click="screen.distance=idealDistance">Use
-                        this!</button>
-                    </td>
-                    <td align="right"><span x-text="idealDistance"></span> cm</td>
-                  </tr>
+                <table class="table is-fullwidth">
+                  <tbody>
+                    <tr>
+                      <td>Ideal Distance at <span x-text="screen.angle"></span>°
+                        <button class="button is-small is-primary is-light" @click="screen.distance=idealDistance">Use
+                          this!</button>
+                      </td>
+                      <td align="right"><span x-text="idealDistance"></span> cm</td>
+                    </tr>
 
-                  <tr x-show="screen.screens=='3'" transition>
-                    <td>optimal Angle at <span x-text="screen.distance"></span>cm
-                      <button class="button is-small is-primary is-light" @click="screen.angle=optimalAngle">Use
-                        this!</button>
-                    </td>
-                    <td align="right"><span x-text="optimalAngle"></span>° </td>
-                  </tr>
-                </tbody>
-              </table>
+                    <tr x-show="screen.screens=='3'" transition>
+                      <td>Ideal Angle at <span x-text="screen.distance"></span>cm
+                        <button class="button is-small is-primary is-light" @click="screen.angle=optimalAngle">Use
+                          this!</button>
+                      </td>
+                      <td align="right"><span x-text="optimalAngle"></span>° </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
 
             </div>
           </div>

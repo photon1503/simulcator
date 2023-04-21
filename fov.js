@@ -7,12 +7,12 @@ screen = {
     diagonal: 32,
     ratio: "[16, 9]",
     screenRatio: [16, 9],
-    bezel: 5,
+    bezel: 9,
     isCurved: false,
     curvatureRadius: 1800,
     screens: 1,
-    angle: 60,
-    distance: 65,
+    angle: 56,
+    distance: 68,
 };
 
 result = {
