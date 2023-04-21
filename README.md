@@ -9,6 +9,10 @@ SIMULCATOR is a tool to calculate correct Field of View.
 - calculate optimal angle for triple screens
 - calculate optimal viewing distance for triple screens
 
+## Usage
+
+The tool is hosted at https://photon1503.github.io/simulcator
+
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first
