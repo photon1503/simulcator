@@ -59,7 +59,7 @@ function calculate(data) {
     result.vFOV = vFOV(result.height, screen.distance);
     result.hFOV = hFOV(screen.screens, result.widthInclBezels, screen.distance);
     result.depth = totalDepth(result.widthInclBezels, screen.angle);
-    result.optimalAngle = radians_to_degrees(ScreenAngle((result.widthInclBezels, screen.distance)));
+    result.optimalAngle = radians_to_degrees(ScreenAngle(result.widthInclBezels, screen.distance));
     result.hFOVcurved = hFOVcurved(result.widthInclBezels, screen.curvatureRadius/10, screen.distance);
     result.idealDistance = idealDistance(screen.angle);
 
