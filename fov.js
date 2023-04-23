@@ -22,7 +22,6 @@ result = {
     straightWidth: 0,
     height: 0,
     totalWidth: 0,
-    idealTotalWidth: 0,
     straightWidth: 0,
     hFOV: 0,
     hFOVcurved: 0,
@@ -37,7 +36,6 @@ display = { width: 0,
     widthInclBezels : 0,
     height: 0,
     totalWidth: 0,
-    idealTotalWidth: 0,
     straightWidth: 0,
     hFOV: 0,
     hFOVcurved: 0,
@@ -57,7 +55,6 @@ function calculate(data) {
     result.width = screenWidth(result.height, result.ratioFactor);
     result.widthInclBezels = result.width + 2 * (screen.bezel/10);
     result.straightWidth = screenStraightWidth(screen.curvatureRadius/10, result.width, screen.bezel/10);
-    result.idealTotalWidth = TotalWidth(ScreenAngle(), result.width);
     result.totalWidth = TotalWidth(degrees_to_radians(screen.angle), result.width);
     result.vFOV = vFOV(result.height, screen.distance);
     result.hFOV = hFOV(screen.screens, result.widthInclBezels, screen.distance);
@@ -70,7 +67,6 @@ function calculate(data) {
     data.display.width = result.width.toFixed(2);
     data.display.widthInclBezels = result.widthInclBezels.toFixed(2);
     data.display.straightWidth = result.straightWidth.toFixed(2);
-    data.display.idealTotalWidth = result.idealTotalWidth.toFixed(2);
     data.display.totalWidth = result.totalWidth.toFixed(2);
     data.display.hFOV = result.hFOV.toFixed(2);
     data.display.vFOV = result.vFOV.toFixed(2);
