@@ -16,6 +16,7 @@ screen = {
 };
 
 result = {
+    ratioFactor: 0,
     width: 0,
     widthInclBezels : 0,
     straightWidth: 0,
@@ -50,21 +51,19 @@ data = { screen, display};  //necessary to get the scope of the AlpineJS object
 function calculate(data) {
     console.log(screen);
 
-    //screen.isCurved = screen.isCurved === "true";
-
-    ratioFactor();
-    result.height =  screenHeight(screen.diagonal);
-    result.width = screenWidth();
+    screen.screenRatio = JSON.parse(screen.ratio);
+    result.ratioFactor = ratioFactor(screen.screenRatio[0], screen.screenRatio[1]);
+    result.height =  screenHeight(screen.diagonal, result.ratioFactor);
+    result.width = screenWidth(result.height, result.ratioFactor);
     result.widthInclBezels = result.width + 2 * (screen.bezel/10);
-    result.straightWidth = screenStraightWidth();
-    result.idealTotalWidth = TotalWidth(ScreenAngle());
-    result.totalWidth = TotalWidth(degrees_to_radians(screen.angle));
-    result.hFOV = hFOV();
-    result.vFOV = vFOV();
-    result.depth = totalDepth();
-    
-    result.optimalAngle = ScreenAngleDeg();
-    result.hFOVcurved = hFOVcurved();
+    result.straightWidth = screenStraightWidth(screen.curvatureRadius/10, result.width, screen.bezel/10);
+    result.idealTotalWidth = TotalWidth(ScreenAngle(), result.width);
+    result.totalWidth = TotalWidth(degrees_to_radians(screen.angle), result.width);
+    result.vFOV = vFOV(result.height, screen.distance);
+    result.hFOV = hFOV(screen.screens, result.widthInclBezels, screen.distance);
+    result.depth = totalDepth(result.widthInclBezels, screen.angle);
+    result.optimalAngle = radians_to_degrees(ScreenAngle((result.widthInclBezels, screen.distance)));
+    result.hFOVcurved = hFOVcurved(result.widthInclBezels, screen.curvatureRadius/10, screen.distance);
     result.idealDistance = idealDistance(screen.angle);
 
     data.display.height = result.height.toFixed(2);
@@ -79,105 +78,85 @@ function calculate(data) {
     data.display.hFOVcurved = result.hFOVcurved.toFixed(2);
     data.display.idealDistance = result.idealDistance.toFixed(2);
     data.display.depth = result.depth.toFixed(2);
-
 }
 
 /*
  * calculate factor from aspect ratio
  */
-function ratioFactor() {
-    screen.screenRatio = JSON.parse(screen.ratio);
-    return screen.screenRatio[0] / screen.screenRatio[1];
+function ratioFactor(ratioWidth, ratioHeight) {
+    
+    return ratioWidth / ratioHeight;
 }
 
 /*
  * Calculate Screen height from diagonal in inches
- * Returns height in cm
  */
-function screenHeight(diagonal) {
-    height = (diagonal / Math.sqrt(ratioFactor() ** 2 + 1)) * inch;
-    return height;
+function screenHeight(diagonal, ratioFactor) {
+    return (diagonal / Math.sqrt(ratioFactor ** 2 + 1)) * inch;
 }
 
 /*
  * calculate screen width based on aspect ratio and height
  */
-function screenWidth() {
-    return ratioFactor() * result.height;
+function screenWidth(height, ratioFactor) {
+    return ratioFactor * height;
 }
 
 /*
  * for curved monitors
  * calculate straigt width
  */
-function screenStraightWidth() {
-    var radius_cm = screen.curvatureRadius / 10;
-    var straightWidth = 2 * radius_cm * Math.sin(result.width / (2 * radius_cm)) + 2 * (screen.bezel/10);
-    return straightWidth;
+function screenStraightWidth(radius, width, bezel) {
+    return straightWidth = 2 * radius * Math.sin(width / (2 * radius)) + 2 * (bezel);
 }
 
 /*
  * for triple screens
  * calculate total width of all 3 monitors
  */
-function TotalWidth(angle) {
-    var W = result.width * (1 + 2 * Math.cos(angle))    
-    console.log("Total width ", W);
-    return W;
+function TotalWidth(angle, width) {
+    return  width * (1 + 2 * Math.cos(angle))    
 }
 
 /*
  * caclulate vertical Field of View
  */
-function vFOV() {
-    var vFOV =  2 * Math.atan((result.height / 2) / screen.distance);
+function vFOV(height, distance) {
+    var vFOV =  2 * Math.atan((height / 2) / distance);
     return radians_to_degrees(vFOV);
 }
 
 /*
  * calculate horizontal Field of View
  */
-function hFOV() {    
-    var hFOV = screen.screens *  2 * Math.atan(result.widthInclBezels / (2 * screen.distance))
+function hFOV(screens, width, distance) {    
+    var hFOV = screens *  2 * Math.atan(width / (2 * distance))
     return radians_to_degrees(hFOV);
 }
 
-function totalDepth() {
-    return result.widthInclBezels * Math.sin(degrees_to_radians(screen.angle));
+function totalDepth(width, angle) {
+    return width * Math.sin(degrees_to_radians(angle));
 }
-
-
 
 /* 
  * calculate horziontal Field of View for curved monitor
  */
-function hFOVcurved() {
-    var w = result.width;    
-    var r = screen.curvatureRadius / 10;
-
-    var hFOVc = screen.screens *  2 * Math.atan(Math.sin(w / (2 * r)) * r / (screen.distance - r * (1 - Math.cos(w / (2 * r)))));
+function hFOVcurved(width, radius, distance) {
+    var hFOVc = screen.screens *  2 * Math.atan(Math.sin(width / (2 * radius)) * radius / (distance - radius * (1 - Math.cos(width / (2 * radius)))));
 
     return radians_to_degrees(hFOVc);
 }
+
 /*
  * ideal screen angle at given distance
  */
-function ScreenAngle() {
-    var a = 2 * Math.atan(result.widthInclBezels / (2 * screen.distance));
-    return a;
-}
-
-function ScreenAngleDeg() {
-    return radians_to_degrees(ScreenAngle());
+function ScreenAngle(width, distance) {
+    return 2 * Math.atan(width / (2 * distance));
 }
 
 /* 
  * Ideal viewing distance at given angle
- * =ScreenWidth / (2 * TAN(RADIANS(Angle) / 2))
  */
 function idealDistance(angle) {
-    console.log("ideal distance a=", angle);
-    d = result.width / (2 * Math.tan(degrees_to_radians(angle) / 2));
-    console.log("ideal distance=", d);
-    return d;
+    return result.width / (2 * Math.tan(degrees_to_radians(angle) / 2));
 }
