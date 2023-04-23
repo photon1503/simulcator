@@ -29,7 +29,7 @@
     <div class="container">
 
       <div x-data="data" x-on:change.debounce="calculate($data)" x-on:keyup.debounce="calculate($data)"
-        x-on:click.debounce="calculate($data)" x-init="calculate($data)">
+        x-on:click.debounce="calculate($data)" x-on:input="calculate($data) x-init="calculate($data)">
         <div class="columns">
 
           <div x-data="screen" class="column">
