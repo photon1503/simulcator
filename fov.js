@@ -3,18 +3,6 @@ const inch = 2.54;
 const radians_to_degrees = (rad) => (rad * 180.0) / Math.PI;
 const degrees_to_radians = (deg) => (deg / 180.0) * Math.PI;
 
-screen = {
-  diagonal: 32,
-  ratio: "[16, 9]",
-  screenRatio: [16, 9],
-  bezel: 9,
-  isCurved: false,
-  curvatureRadius: 1800,
-  screens: 1,
-  angle: 56,
-  distance: 68,
-};
-
 result = {
   ratioFactor: 0,
   width: 0,
@@ -31,68 +19,75 @@ result = {
   depth: 0,
 };
 
-display = {
-  width: 0,
-  straightWidth: 0,
-  widthInclBezels: 0,
-  height: 0,
-  totalWidth: 0,
-  straightWidth: 0,
-  hFOV: 0,
-  hFOVcurved: 0,
-  vFOV: 0,
-  optimalAngle: 0,
-  idealDistance: 0,
-  depth: 0,
-};
+document.addEventListener('alpine:init', function () {
+  Alpine.data('data', function () {
+    return {
+      input: {
+        diagonal: 33,
+        ratio: "[16, 9]",
+        screenRatio: [16, 9],
+        bezel: 9,
+        isCurved: false,
+        curvatureRadius: 1800,
+        screens: 1,
+        angle: 56,
+        distance: 68,
+      },
+      display: {
+        height: 0,
+        width: 0,
+        widthInclBezels: 0,
+        straightWidth: 0,
+        totalWidth: 0,
+        hFOV: 0,
+        vFOV: 0,
+        optimalAngle: 0,
+        hFOVcurved: 0,
+        idealDistance: 0,
+        depth: 0,
+      },
+      calculate() {
+        this.input.screenRatio = JSON.parse(this.input.ratio);
+        result.ratioFactor = ratioFactor(
+          this.input.screenRatio[0],
+          this.input.screenRatio[1]
+        );
+        result.height = screenHeight(this.input.diagonal, result.ratioFactor);
+        result.width = screenWidth(result.height, result.ratioFactor);
+        result.widthInclBezels = result.width + 2 * (this.input.bezel / 10);
+        result.straightWidth = screenStraightWidth(
+          this.input.curvatureRadius / 10,
+          result.width,
+          this.input.bezel / 10
+        );
+        result.totalWidth = TotalWidth(
+          degrees_to_radians(this.input.angle),
+          result.width
+        );
+        result.vFOV = vFOV(result.height, this.input.distance);
+        result.hFOV = hFOV(this.input.screens, result.widthInclBezels, this.input.distance);
+        result.depth = totalDepth(result.widthInclBezels, this.input.angle);
+        result.optimalAngle = radians_to_degrees(
+          ScreenAngle(result.widthInclBezels, this.input.distance)
+        );
+        result.hFOVcurved = hFOVcurved(
+          this.input.screens,
+          result.widthInclBezels,
+          this.input.curvatureRadius / 10,
+          this.input.distance
+        );
+        result.idealDistance = idealDistance(this.input.angle);
 
-data = { screen, display }; //necessary to get the scope of the AlpineJS object
+        // assing result to display
+        for (element in result) {
+          this.display[element] = result[element].toFixed(2);
+        }
 
-function calculate(data) {
-  console.log(screen);
+      }
+    };
+  });
+});
 
-  screen.screenRatio = JSON.parse(screen.ratio);
-  result.ratioFactor = ratioFactor(
-    screen.screenRatio[0],
-    screen.screenRatio[1]
-  );
-  result.height = screenHeight(screen.diagonal, result.ratioFactor);
-  result.width = screenWidth(result.height, result.ratioFactor);
-  result.widthInclBezels = result.width + 2 * (screen.bezel / 10);
-  result.straightWidth = screenStraightWidth(
-    screen.curvatureRadius / 10,
-    result.width,
-    screen.bezel / 10
-  );
-  result.totalWidth = TotalWidth(
-    degrees_to_radians(screen.angle),
-    result.width
-  );
-  result.vFOV = vFOV(result.height, screen.distance);
-  result.hFOV = hFOV(screen.screens, result.widthInclBezels, screen.distance);
-  result.depth = totalDepth(result.widthInclBezels, screen.angle);
-  result.optimalAngle = radians_to_degrees(
-    ScreenAngle(result.widthInclBezels, screen.distance)
-  );
-  result.hFOVcurved = hFOVcurved(
-    result.widthInclBezels,
-    screen.curvatureRadius / 10,
-    screen.distance
-  );
-  result.idealDistance = idealDistance(screen.angle);
-
-  data.display.height = result.height.toFixed(2);
-  data.display.width = result.width.toFixed(2);
-  data.display.widthInclBezels = result.widthInclBezels.toFixed(2);
-  data.display.straightWidth = result.straightWidth.toFixed(2);
-  data.display.totalWidth = result.totalWidth.toFixed(2);
-  data.display.hFOV = result.hFOV.toFixed(2);
-  data.display.vFOV = result.vFOV.toFixed(2);
-  data.display.optimalAngle = result.optimalAngle.toFixed(2);
-  data.display.hFOVcurved = result.hFOVcurved.toFixed(2);
-  data.display.idealDistance = result.idealDistance.toFixed(2);
-  data.display.depth = result.depth.toFixed(2);
-}
 
 /*
  * calculate factor from aspect ratio
@@ -155,13 +150,13 @@ function totalDepth(width, angle) {
 /*
  * calculate horziontal Field of View for curved monitor
  */
-function hFOVcurved(width, radius, distance) {
+function hFOVcurved(screens, width, radius, distance) {
   var hFOVc =
-    screen.screens *
+    screens *
     2 *
     Math.atan(
       (Math.sin(width / (2 * radius)) * radius) /
-        (distance - radius * (1 - Math.cos(width / (2 * radius))))
+      (distance - radius * (1 - Math.cos(width / (2 * radius))))
     );
 
   return radians_to_degrees(hFOVc);

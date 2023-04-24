@@ -12,6 +12,7 @@
   <title>SIMULCATOR</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script src="fov.js"></script>
 </head>
 
 <body>
@@ -28,11 +29,12 @@
   <section class="section">
     <div class="container">
 
-      <div x-data="data" x-on:change.debounce="calculate($data)" x-on:keyup.debounce="calculate($data)"
-        x-on:click.debounce="calculate($data)" x-on:input="calculate($data) x-init="calculate($data)">
+      <div x-data="data" x-on:click.debounce="calculate()" x-init="calculate()" x-on:change.debounce="calculate()"
+        x-on:keyup.debounce="calculate()">
+
         <div class="columns">
 
-          <div x-data="screen" class="column">
+          <div x-data="input" class="column">
             <div class="box has-background-primary-light">
               <p class="title is-3">Input</p>
 
@@ -95,7 +97,7 @@
                 <p class="help ">Wether you monitor is flat or curved</p>
               </div>
 
-              <div class="field" x-show="isCurved=='curved'" x-transition>
+              <div class="field" x-show="input.isCurved=='curved'" x-transition>
                 <label class="label" for="Curvature">Curvature Radius</label>
                 <div class="field-body">
                   <div class="field is-expanded">
@@ -126,7 +128,7 @@
                 </div>
               </div>
 
-              <div class="field" x-show="screens=='3'" transition>
+              <div class="field" x-show="input.screens=='3'" transition>
                 <label class="label" for="angle">Angle</label>
                 <div class="field-body">
                   <div class="field is-expanded">
@@ -190,18 +192,18 @@
                     <td align="right"><span x-text="widthInclBezels"></span> cm</td>
                   </tr>
 
-                  <tr x-show="screen.isCurved=='curved'" x-transition>
+                  <tr x-show="input.isCurved=='curved'" x-transition>
                     <td>Straight screen width</td>
                     <td align="right"><span x-text="straightWidth"></span> cm</td>
                   </tr>
 
 
-                  <tr x-show="screen.screens=='3'" transition>
+                  <tr x-show="input.screens=='3'" transition>
                     <td>Total width of triple screen setup at <span x-text="screen.angle"></span>°</td>
                     <td align="right"><span x-text="totalWidth"></span> cm</td>
                   </tr>
 
-                  <tr x-show="screen.screens=='3'" transition>
+                  <tr x-show="input.screens=='3'" transition>
                     <td>Depth of triple screen setup </td>
                     <td align="right"><span x-text="depth"></span> cm</td>
                   </tr>
@@ -217,7 +219,7 @@
                     <td align="right"><span x-text="hFOV"></span>° </td>
                   </tr>
 
-                  <tr x-show="screen.isCurved=='curved'" x-transition>
+                  <tr x-show="input.isCurved=='curved'" x-transition>
                     <td>hFOV curved</td>
                     <td align="right"><span x-text="hFOVcurved"></span>° </td>
                   </tr>
@@ -229,22 +231,22 @@
                 </tbody>
               </table>
 
-              <div x-show="screen.screens=='3'" transition>
+              <div x-show="input.screens=='3'" transition>
                 <p class="title is-4">Ideal Distance and Angle</p>
 
                 <table class="table is-fullwidth">
                   <tbody>
                     <tr>
-                      <td>Ideal Distance at <span x-text="screen.angle"></span>°
-                        <button class="button is-small is-primary is-light" @click="screen.distance=idealDistance">Use
+                      <td>Ideal Distance at <span x-text="input.angle"></span>°
+                        <button class="button is-small is-primary is-light" @click="input.distance=idealDistance">Use
                           this!</button>
                       </td>
                       <td align="right"><span x-text="idealDistance"></span> cm</td>
                     </tr>
 
-                    <tr x-show="screen.screens=='3'" transition>
-                      <td>Ideal Angle at <span x-text="screen.distance"></span>cm
-                        <button class="button is-small is-primary is-light" @click="screen.angle=optimalAngle">Use
+                    <tr x-show="input.screens=='3'" transition>
+                      <td>Ideal Angle at <span x-text="input.distance"></span>cm
+                        <button class="button is-small is-primary is-light" @click="input.angle=optimalAngle">Use
                           this!</button>
                       </td>
                       <td align="right"><span x-text="optimalAngle"></span>° </td>
@@ -273,6 +275,6 @@
       </div>
     </section>
 </body>
-<script src="fov.js"></script>
+
 
 </html>
