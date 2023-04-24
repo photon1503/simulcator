@@ -23,7 +23,7 @@ document.addEventListener('alpine:init', function () {
   Alpine.data('data', function () {
     return {
       input: {
-        diagonal: 33,
+        diagonal: 32,
         ratio: "[16, 9]",
         screenRatio: [16, 9],
         bezel: 9,
@@ -31,7 +31,7 @@ document.addEventListener('alpine:init', function () {
         curvatureRadius: 1800,
         screens: 1,
         angle: 56,
-        distance: 68,
+        distance: 67,
       },
       display: {
         height: 0,
